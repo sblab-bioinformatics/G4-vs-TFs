@@ -12,6 +12,8 @@ This repository contains data access and computational analysis for the methods 
 
 - DNase-seq (ENCSR000EPC) to map open chromatin as well as ChIP-seq maps of transcription factors and histone marks in K562 cells were downloaded from [ENCODE](https://www.encodeproject.org/). Files were downloaded mapped to h19 in Jan 2019. Meta data of considered ChIP-seq files can be found [here]().
 
+- RNA-seq data for K562 cells was downloaded from ENCDOE (ENCSR000AEM, ENCSR545DKY)
+
 
 ### Code
 
