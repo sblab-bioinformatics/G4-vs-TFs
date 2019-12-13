@@ -1,7 +1,7 @@
 
 # This R script will read blocks of GAT shuffling results (in whitelisted genome (WL), open chromatin (DHS), OQS and 'open' OQS) combine results with ENCODE meta data
 
-```R
+
 # ======= Libraries and working directory
 library(data.table)
 library(dplyr)
