@@ -156,6 +156,8 @@ rm temp.bed
 ## Fragment size distribution in datasets
 
 ```R
+R
+
 BG4_consensus <- read.table(file = "BG4-ChIP/20180108_K562_async_rep1-3.mult.5of8.bed", sep = '\t', header = F)
 BG4_consensus$size <- BG4_consensus$V3 - BG4_consensus$V2
 mean(BG4_consensus$size)
