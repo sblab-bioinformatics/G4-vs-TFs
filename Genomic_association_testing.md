@@ -148,19 +148,13 @@ Results for different randomizations were combined and visualized [using a custo
 
 
 
+# G4 secondary structure vs primary sequence
+G4-ChIP sites are inherrently G-rich. Perform association analysis for a [control sites](G4-ChIP-seq.md#g4-control-data-set-oqs-in-open-chromatin-around-tss) that do not form G4 structures, but otherwise share very similar genomic features. (open chromatin, G4-forming potential, around TSS).
+[GAT_opOQs-noBG4_1kbupstreamTSS__DHS.sh](Scripts/GAT_opOQs-noBG4_1kbupstreamTSS__DHS.sh)
+
+Compare enrichment in endogenous G4s to control sites using [custom R script](Scripts/G4structure_vs_sequence.R)
 
 
-# GAT analysis - disentangle G-richness
-## Run shuffling on cluster
-Assess influence of inherent G-richness of BG4 ChIP sites. A similar analysis had [previously](https://github.com/sblab-bioinformatics/projects/blob/master/20171123_Jochen_ENCODE/Shuffling-Analysis/20180217_GAT_analysis_Disentangle_G-richness_in_BG4_regions.md) been performed for the pilot data sets.
-Repeat with updated list ENCODE bed files. See [Scripts](Scripts/) (GAT_opOQs-noBG4_atTSS_Update_2019Jan_DHS.sh, GAT_opOQs-noBG4_Update_2019Jan_DHS.sh, GAT_opOQs-WithBG4_Update_2019Jan_DHS.sh, GAT_opOQs-noBG4_1kbupstreamTSS_Update_2019Dec_DHS.sh)
-
-Run Shuffling on cluster
-```
-cd /scratchb/sblab/spiege01/ENCODE_K562/GAT_Rerun_Jan2019/Job_files/GAT_Grichness
-for JOB in *opOQs*.sh; do sbatch  $JOB; done
-```
-See [R analysis]. Technically, ranking based on enrichemnt is not representative, as a couple of very lowly enriched factors are even more depleted for NoBG4.
 
 
 
