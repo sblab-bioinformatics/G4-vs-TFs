@@ -2,6 +2,60 @@
 For a more detailed description of our in-house ChIP-seq pipeline please refer to our [previous work](https://github.com/sblab-bioinformatics/dna-secondary-struct-chrom-lands/blob/master/Methods.md).
 Briefly, raw fastq reads from G4-ChIP-seq in K562 cells were trimmed with cutadapt to remove adapter sequences and low-quality reads (mapping quality < 10). Reads were aligned to the human genome (version hg19) with BWA and duplicates were removed using Picard. Peaks were called by MACS2 (p < 1e-05). Peaks were merged from different replicates with bedtools multiIntersect. Only peaks overlapping in 5 out 8 replicates were considered high-confidence. 
 
+### Visualize replicate overlap using Intervene
+Folder macs2/ contains individual peak files:
+```
+cd macs2/
+sbatch -J Intervene -o pw.log --mem 2g --wrap " intervene pairwise -i \
+G4_bio1_a.narrowPeak \
+G4_bio1_b.narrowPeak \
+G4_bio2_a.narrowPeak \
+G4_bio2_b.narrowPeak \
+G4_bio2_c.narrowPeak \
+G4_bio3_a.narrowPeak \
+G4_bio3_b.narrowPeak \
+G4_bio3_c.narrowPeak \
+--names \
+Rep1_a,Rep1_b,Rep2_a,Rep2_b,Rep2_c,Rep3_a,Rep3_b,Rep3_c \
+--compute frac --htype tribar \
+-o BG4_ChIP_replciates_PW_triang"
+```
+
+### BG4-ChIP signal distribution around TSS
+Folder bigWig/ contains G4 ChIP-seq bigWig files normalized to sequencing depth using deeptools.
+```
+cd bigWig/
+
+sbatch -o G4.log -J DT_Profile --mem=10000 \
+--wrap "computeMatrix reference-point \
+--referencePoint center \
+-b 1000 -a 1000 \
+-S \
+G4_bio1_a.bs50.bl.RPKM.bw \
+G4_bio1_b.bs50.bl.RPKM.bw \
+G4_bio1_IP.bs50.bl.RPKM.bw \
+G4_bio2_a.bs50.bl.RPKM.bw \
+G4_bio2_b.bs50.bl.RPKM.bw \
+G4_bio2_c.bs50.bl.RPKM.bw \
+G4_bio2_IP.bs50.bl.RPKM.bw \
+G4_bio3_a.bs50.bl.RPKM.bw \
+G4_bio3_b.bs50.bl.RPKM.bw \
+G4_bio3_c.bs50.bl.RPKM.bw \
+G4_bio3_IP.bs50.bl.RPKM.bw \
+-R \
+ENCODE_TSS.hg19.bed \
+--skipZeros \
+-o BG4_around_TSS.mat.gz && 
+plotProfile -m BG4_around_TSS.mat.gz \
+-out /scratchb/sblab/spiege01/ENCODE_K562/Target_assesment/ChIP_Profile/BG4_features/BG4_around_TSS.pdf \
+--refPointLabel ENCODE_TSS \
+--regionsLabel BG4_signal \
+--dpi 300 \
+--plotHeight 10 \
+--plotWidth 20 \
+--perGroup \
+--numPlotsPerRow 1"
+```
 
 
 # Generation of pseudo-stranded G4 ChIP-seq 
@@ -94,5 +148,27 @@ awk '{print $1"\t"$2"\t"$3"\t.\t.\t"$6}' temp.bed > openOQs_noBG4_Stranded_1kbup
 rm temp.bed
 ```
 
+
+
+# Features of data sets
+
+
+## Fragment size distribution in datasets
+
+```R
+BG4_consensus <- read.table(file = "BG4-ChIP/20180108_K562_async_rep1-3.mult.5of8.bed", sep = '\t', header = F)
+BG4_consensus$size <- BG4_consensus$V3 - BG4_consensus$V2
+mean(BG4_consensus$size)
+median(BG4_consensus$size)
+max(BG4_consensus$size)
+min(BG4_consensus$size)
+
+G4_opOQ_TSSupstream1000 <- read.table(file = "BG4-ChIP/openOQS_noBG4_1kbupTSS.bed", sep = '\t', header = F)
+G4_opOQ_TSSupstream1000$size <- G4_opOQ_TSSupstream1000$V3 - G4_opOQ_TSSupstream1000$V2
+mean(G4_opOQ_TSSupstream1000$size)
+median(G4_opOQ_TSSupstream1000$size)
+max(G4_opOQ_TSSupstream1000$size)
+min(G4_opOQ_TSSupstream1000$size)
+```
 
 
