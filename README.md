@@ -17,9 +17,9 @@ This repository contains data access and computational analysis for the methods 
 
 ### Code
 
-- [**BG4 ChIP-seq analysis and G4 control data set**](/G4-ChIP-seq.md)
+- [**BG4 ChIP-seq analysis and G4 control data set**](G4-ChIP-seq.md)
 
-- [**Genomic association testing**](/Genomic association testing.md)
+- [**Genomic association testing**](Genomic association testing.md)
 
 - [**SP2 native ChIP-seq and differential binding**]()
 
