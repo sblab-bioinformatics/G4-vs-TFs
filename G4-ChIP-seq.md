@@ -130,6 +130,7 @@ Generate a control data set with sites that have the potential to form G4s (G-se
 ```
 
 intersectBed -wa -a G4-Seq_K_PDS_stranded.bed.gz -b DNAse-seq.concatenated_narrow_rep1_and_rep2.bed > openOQs_stranded.bed
+bedtools merge -i openOQs_stranded.bed > OQs_in_K562_open_chromatin.bed
 
 intersectBed -v -a openOQs_stranded.bed -b 20180108_K562_async_rep1-3.mult.5of8.bed > openOQs_noBG4_stranded.bed
 
