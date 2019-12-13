@@ -1,14 +1,5 @@
-
-- filter releavant ENCODE files (Script);
-- download ENCODE files -> upload ENCODE file
-
-- prepare workspaces (DHS, OQS, opOQS)
-
-
-# Genomic association testing
+# Genomic association testing of G4 ChIP-seq high confidence peaks
  
-
-
 ## Selection and download of relevant ENCODE ChIP-seq bed files
 Genomic binding sites for chromatin-associated factors and histone marks (aligned to hg19) were downloaded from [ENCODE](https://www.encodeproject.org/) (Meta-Data was generated on 10.01.2019 ). All available ChIP-seq data sets were considered.
 > filter: 'cell line': "K562"  
@@ -79,7 +70,7 @@ write.table(ENC_filt,'ENCODE_K562_Jan2019_BED_Meta.tsv', sep="\t", quote = FALSE
 ### Download  selected bed files
 
 ```
-cd K562_Bed_Jan2019
+cd K562_Bed_Jan2019/
 sbatch -o Download.%j.log -J ENCODE_download --mem=10000 --wrap "xargs -n 1 curl -O -L < 20190117_LINKS_K562_bedfiles.txt"
 ```
 
@@ -90,7 +81,7 @@ sbatch -o Download.%j.log -J ENCODE_download --mem=10000 --wrap "xargs -n 1 curl
 Cut column 1-3 to be compatible with GAT analysis:
 
 ```
-cd K562_Bed_Jan2019
+cd K562_Bed_Jan2019/
 
 for FILE in *.bed.gz
 do
@@ -101,7 +92,7 @@ done
 
 ```
 
-Generate list of bed files for GAT job scripts:
+#### Generate list of bed files for GAT job scripts:
 ```
 cd ../K562_Cut_Bed_Jan2019
 
@@ -111,58 +102,41 @@ echo '--annotations=/scratchb/sblab/spiege01/ENCODE_K562/GAT_Rerun_Jan2019/K562_
 done >> K562_Rerun_Jan2019_annotations_list.txt
 ```
 
-### Produce different workspacede for randomization
-
-
-
-
-
-
-
-
-
-Run shuffling on cluster
-```
-cd Job_files
-for Job in *.sh; do sbatch $Job; done
-```
-
-# Analysis 
-### peak numbers
+#### peak numbers in each file
 
 ```
-cd /scratchb/sblab/spiege01/ENCODE_K562/GAT_Rerun_Jan2019/K562_Cut_Bed_Jan2019
-srun --mem 8g --pty /usr/bin/bash
-
 for FILE in *.bed.gz
 do
 Bedname=`basename $FILE .bed.gz`
 Peaks=`zcat $FILE | wc -l`
 echo -e $Bedname'\t'$Peaks >> K562_Jan2019_NumberOfPeaks.txt
-echo $FILE
 done
-
-exit
 ```
 
-# GAT analysis in proximity of G4s
-Aim: Expand BG4 peaks by 500bp flanking regions and see if that considerably changes the ranking/enrichment. Maybe there is a protein that only binds in the proximity of G4s but not directly.
 
-### Generate expanded BG4 consensuspeaks
 
-```
-cd /scratchb/sblab/spiege01/ENCODE_K562/reference_data/Quadruplex/
+## Workspaces
+Several different workspaces were considered for randomization using GAT.
+- white-listed genome (hg19): [hg19.wgEncodeDukeMapabilityRegionsExcludable.whitelist.bed](http://hgdownload.cse.ucsc.edu/goldenpath/hg19/encodeDCC/wgEncodeMapability/)
+- sites with G4 forming potential (OQS from G4-seq): [G4-Seq_cat_K_PDS_+-strands.bed](/G4-ChIP-seq.md#stranded-oqs-map)
+- open Chromatin (ENCODE K562 DNase-seq): [DNAse-seq.concatenated_narrow_rep1_and_rep2.bed](https://www.encodeproject.org/experiments/ENCSR000EPC/)
+- G4-Seq OQs in open chromatin: [OQs_in_K562_open_chromatin.bed](/G4-ChIP-seq.md#stranded-oqs-map)
 
-bedtools slop -i 20180108_K562_async_rep1-3.mult.5of8.bed -b 500 -g /scratchb/sblab/spiege01/ENCODE_K562/reference_data/hg19/hg19.genome | bedtools sort -i - > 20180108_K562_async_rep1-3.mult.5of8_slop_b_500.bed
 
-```
+## Randomization and statistical analysis
+Scripts for indiviual shuffling analysis.
 
-Generated jobfiles accordingly (see scripts)
-```
-for JOB in *slop*.sh; do sbatch  $JOB; done
-```
+[GAT_K562_ReRun2019_WL.sh](Scripts/GAT_K562_ReRun2019_WL.sh)
+[GAT_K562_ReRun2019_OQS.sh](Scripts/GAT_K562_ReRun2019_OQS.sh)
+[GAT_K562_ReRun2019_DHS.sh](Scripts/GAT_K562_ReRun2019_DHS.sh)
+[GAT_K562_ReRun2019_opOQS.sh](Scripts/GAT_K562_ReRun2019_opOQS.sh)
 
-Combined [R analysis](https://github.com/sblab-bioinformatics/projects/blob/master/20171123_Jochen_ENCODE/Shuffling-Analysis/K562_Update_Jan2019/Scripts/K562_Rerun_Jan2019_GAT_analysis.R) .
+
+## Visualization
+Results for different randomizations were combined and visualized [using a custom R script](Scripts/GAT-analysis.R).
+
+
+
 
 
 
