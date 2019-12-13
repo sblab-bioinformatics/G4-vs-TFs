@@ -22,8 +22,8 @@ savetables <- 1
 GAT_segments <- c('BG4_Rerun') 
 
 # ====== Parameters for Filtering the data ====
-qValue_cutoff <-  1 ## (this currently not used)
-PEAK_NUMBER_Cutoff <- 500 # --- filtering by peak number should be covered by too high q-values
+qValue_cutoff <-  0.05
+PEAK_NUMBER_Cutoff <- 500 
 
 Explicit_exclusion <- c("ENCFF782GWS") # ("HNRNPF", "RBM15", "RBM17", "RBM34") Datasets have been flagged in original paper (Cell 2019 (10.1016/j.cell.2019.06.001)), but not yet on ENCODE
 
