@@ -122,6 +122,16 @@ Several different workspaces were considered for randomization using GAT.
 - open Chromatin (ENCODE K562 DNase-seq): [DNAse-seq.concatenated_narrow_rep1_and_rep2.bed](https://www.encodeproject.org/experiments/ENCSR000EPC/)
 - G4-Seq OQs in open chromatin: [OQs_in_K562_open_chromatin.bed](/G4-ChIP-seq.md#stranded-oqs-map)
 
+In addition, chrM was not compatible with GAT tool and needed to be removed from workspaces.
+```
+grep -v chrM hg19.wgEncodeDukeMapabilityRegionsExcludable.whitelist.bed > Whitelist_chrM.bed
+grep -v chrM G4-Seq_cat_K_PDS_+-strands.bed > OQs_chrM.bed
+grep -v chrM DNAse-seq.concatenated_narrow_rep1_and_rep2.bed  > DHS_chrM.bed
+grep -v chrM OQs_in_K562_open_chromatin.bed > openOQs_chrM.bed
+
+```
+
+
 
 ## Randomization and statistical analysis
 Scripts for indiviual shuffling analysis.
