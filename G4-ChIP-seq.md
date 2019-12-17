@@ -1,9 +1,12 @@
 # G4-ChIP-seq analysis
-For a more detailed description of our in-house ChIP-seq pipeline please refer to our [previous work](https://github.com/sblab-bioinformatics/dna-secondary-struct-chrom-lands/blob/master/Methods.md).
-Briefly, raw fastq reads from G4-ChIP-seq in K562 cells were trimmed with cutadapt to remove adapter sequences and low-quality reads (mapping quality < 10). Reads were aligned to the human genome (version hg19) with BWA and duplicates were removed using Picard. Peaks were called by MACS2 (p < 1e-05). Peaks were merged from different replicates with bedtools multiIntersect. Only peaks overlapping in 5 out 8 replicates were considered high-confidence. 
+
+For a more detailed description of our in-house G4-ChIP-seq pipeline please refer to our [previous work](https://github.com/sblab-bioinformatics/dna-secondary-struct-chrom-lands/blob/master/Methods.md). Briefly, G4-ChIP-seq experiments in K562 cells generated raw fastq files containing sequencing reads that were trimmed with *cutadapt* to remove adapter sequences and low-quality bases (phred quality score < 10). Trimmed reads were aligned to the human reference genome (version hg19) using *BWA* and duplicates were marked and removed using *Picard* and *samtools*, respectively. Peaks were called using *MACS2* (p < 1e-05) and merged considering different replicates using *bedtools multiinter*. Only peaks overlapping in 5 out 8 replicates were considered as high-confidence. 
+
 
 ### Visualize replicate overlap using Intervene
-Folder macs2/ contains individual peak files:
+
+The folder `macs2/` contains the individual peak files generated as described above:
+
 ```
 cd macs2/
 sbatch -J Intervene -o pw.log --mem 2g --wrap " intervene pairwise -i \
