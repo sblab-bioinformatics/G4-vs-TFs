@@ -11,7 +11,7 @@ This repository contains the data access and computational analyses for the meth
 
 - G4 forming sequences in genomic (OQS), single-stranded DNA observed via G4-seq are available in NCBI GEO [GSE63874](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE63874).
 
-- DNase-seq data for open chromatin maps and ChIP-seq maps of transcription factors and histone marks in K562 cells were downloaded from ENCODE [ENCSR000EOT](https://www.encodeproject.org/experiments/ENCSR000EOT/). Files were mapped to h19 in Jan 2019. The meta data of the considered ChIP-seq files can be found [here]().
+- DNase-seq data for open chromatin maps and ChIP-seq maps of transcription factors and histone marks in K562 cells were downloaded from ENCODE [ENCSR000EOT](https://www.encodeproject.org/experiments/ENCSR000EOT/). Files were mapped to hg19 in Jan 2019. The meta data of the considered ChIP-seq files can be found [here]().
 
 - RNA-seq data for K562 cells were downloaded from ENCODE [ENCSR000AEM](https://www.encodeproject.org/experiments/ENCSR000AEM/) and [ENCSR545DKY](https://www.encodeproject.org/experiments/ENCSR545DKY/)
 
