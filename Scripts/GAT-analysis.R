@@ -254,6 +254,13 @@ for (i in 1:length(GAT_segments))
     temp <- GAT_FILTERED_trim
     temp$G4IPD <- ifelse(temp$Experiment.target %in% Known_G4_proteins$V1, "#aad2a5", "grey50")
     
+    # highlight candidates that are not considered "canonical TFs" (see http://humantfs.ccbr.utoronto.ca/) 
+    Known_TF <- read.csv(file = "Human_TFs_Dataset/DatabaseExtract_v_1.01.csv", header = T)
+    Known_TF <- Known_TF[, c("HGNC.symbol", "Is.TF." )]
+    Known_TF <- Known_TF[Known_TF$Is.TF. == "No",]
+    temp$Is.TF <- ifelse(temp$Experiment.target %in% Known_TF$HGNC.symbol, "#E98B0B", "grey50")
+    
+    
     # =====
     # =DHS
     # =====
@@ -361,6 +368,62 @@ for (i in 1:length(GAT_segments))
     ggsave(file =paste("K562_Rerun_Jan2019/GAT_analysis/figures/DHS_bottom20_", Gat_Seg, "_Jan2019_Gat-Analysis_byTarget-mean_rotated.pdf",  sep=""), width = 9/2.54, height = 6/2.54, limitsize = FALSE)
     
     
+                                          
+#############################
+## Highlight non-canonical TFs
+                                       
+                                          
+# all
+temp_plot <- temp[order(temp$DHS_fold, decreasing = TRUE), ]
+
+gg <- ggplot(temp_plot, aes(x=as.factor((DHS_rank)), y=DHS_fold)) + 
+  geom_bar(stat="identity", fill=(temp_plot$Is.TF) ) +
+  xlab("") +
+  ylab("fold enrichment in DHS") +
+  theme_minimal() +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank())+
+  scale_x_discrete(labels="") +
+  geom_hline(yintercept=5, linetype="dashed", color = "grey30", size = 0.3 )+
+  geom_hline(yintercept=10, linetype="dashed", color = "grey30", size = 0.3)
+plot(gg)
+
+ggsave(file =paste("K562_Rerun_Jan2019/GAT_analysis/figures/DHS_all_", Gat_Seg, "_Jan2019_Gat-Analysis_byTarget-mean_TF.pdf",  sep=""), width = 20/2.54, height = 6/2.54, limitsize = FALSE)
+
+# top 20
+temp_plot <- temp[order(temp$DHS_fold, decreasing = TRUE), ]
+temp_plot <- temp_plot[1:20,]
+
+gg <- ggplot(temp_plot, aes(x=as.factor((DHS_rank)), y=DHS_fold)) + 
+  geom_bar(stat="identity",color="black", fill=(temp_plot$Is.TF), width=0.8 ) +
+  xlab("") +
+  ylab("fold enrichment in DHS") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90))+
+  scale_x_discrete(labels=(temp_plot$Experiment.target)) 
+plot(gg)
+
+ggsave(file =paste("K562_Rerun_Jan2019/GAT_analysis/figures/DHS_top20_", Gat_Seg, "_Jan2019_Gat-Analysis_byTarget-mean_TF.pdf",  sep=""), width = 9/2.54, height = 6/2.54, limitsize = FALSE)
+
+
+
+
+# bottom 20
+temp_plot <- temp[order(temp$DHS_fold, decreasing = TRUE), ]
+temp_plot <- tail(temp_plot, 20)
+
+gg <- ggplot(temp_plot, aes(x=as.factor((DHS_rank)), y=DHS_fold)) + 
+  annotation_logticks(sides= "l")+
+  geom_bar(stat="identity",color="black", fill=(temp_plot$Is.TF), width=0.8 ) +
+  xlab("") +
+  ylab("fold enrichment in DHS") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90))+
+  scale_x_discrete(labels=(temp_plot$Experiment.target)) +
+  scale_y_log10(breaks = trans_breaks("log10", function(x) 10^x), labels = trans_format("log10", math_format(10^.x))) 
+plot(gg)
+ggsave(file =paste("K562_Rerun_Jan2019/GAT_analysis/figures/DHS_bottom20_", Gat_Seg, "_Jan2019_Gat-Analysis_byTarget-mean_TF.pdf",  sep=""), width = 9/2.54, height = 6/2.54, limitsize = FALSE)                                     
+                                          
+                                          
     
     
     # =====
