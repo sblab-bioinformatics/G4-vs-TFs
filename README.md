@@ -1,18 +1,19 @@
+
 # Transcription factors are routinely recruited to G-quadruplex DNA secondary structures in chromatin 
 
-This repository contains data access and computational analysis for the methods developed in our [published manuscript]().
+This repository contains the data access and computational analyses for the methods developed in our *submitted manuscript*.
 
 ### Data
 
-- All in-house the sequencing data have been deposited in the NCBI GEO database under accession number [](). 
+- All in-house sequencing data have been deposited in the NCBI GEO database under accession number [XXX](). 
 
-- Addition replicates for G4 ChIP-seq in K562 cells have previously been deposited on NCBI GEO. [GSE107690](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE107690)
+- Additional replicates for G4 ChIP-seq in K562 cells have previously been deposited in NCBI GEO [GSE107690](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE107690).
 
-- G4 forming sequences in genomic (OQS), single-stranded DNA observed via G4-seq are available from NCBI GEO. [GSE63874](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE63874).
+- G4 forming sequences in genomic (OQS), single-stranded DNA observed via G4-seq are available in NCBI GEO [GSE63874](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE63874).
 
-- DNase-seq (ENCSR000EPC) to map open chromatin as well as ChIP-seq maps of transcription factors and histone marks in K562 cells were downloaded from [ENCODE](https://www.encodeproject.org/). Files were downloaded mapped to h19 in Jan 2019. Meta data of considered ChIP-seq files can be found [here]().
+- DNase-seq data for open chromatin maps and ChIP-seq maps of transcription factors and histone marks in K562 cells were downloaded from ENCODE [ENCSR000EOT](https://www.encodeproject.org/experiments/ENCSR000EOT/). Files were mapped to h19 in Jan 2019. The meta data of the considered ChIP-seq files can be found [here]().
 
-- RNA-seq data for K562 cells was downloaded from ENCDOE (ENCSR000AEM, ENCSR545DKY)
+- RNA-seq data for K562 cells were downloaded from ENCDOE [ENCSR000AEM](https://www.encodeproject.org/experiments/ENCSR000AEM/) and [ENCSR545DKY](https://www.encodeproject.org/experiments/ENCSR545DKY/)
 
 
 ### Code
