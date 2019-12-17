@@ -1,27 +1,20 @@
-**Check with Sergio**
-
-How do we deal with fastq from different runs?  (probably rename accordingly and then adjust script...)
-
-
-**Samples**
 
 | Sample | Index | SLX-Number |	
 | --- | --- | --- | 
-| K562_rep2_F_input_Input_DMSO_i709-i501 | D709dna-D501dna |SLX-15865 |
-| K562_rep1_A1_SP2_50uMPDS_i710-i502 | D710dna-D502dna |SLX-15865 |
-| K562_rep1_A2_SP2_50uMPDS_i711-i503 | D711dna-D503dna |SLX-15865 |
-| K562_rep1_A3_SP2_50uMPDS_i712-i504 | D712dna-D504dna |SLX-15865 |
-| K562_rep1_B1_SP2_DMSO_i701-i505 | D701dna-D505dna |SLX-15865 |
-| K562_rep1_B2_SP2_DMSO_i702-i506 | D702dna-D506dna |SLX-15865 |
-| K562_rep1_B3_SP2_DMSO_i703-i507 | D703dna-D507dna |SLX-15865 |
-| K562_rep1_B_input_Input_DMSO_i710-i506 | D710dna-D506dna |SLX-15865 |
+| K562_rep2_F_input_Input_DMSO_i709-i501 | D709dna-D501dna | SLX-15865 |
+| K562_rep1_A1_SP2_50uMPDS_i710-i502 | D710dna-D502dna | SLX-15865 |
+| K562_rep1_A2_SP2_50uMPDS_i711-i503 | D711dna-D503dna | SLX-15865 |
+| K562_rep1_A3_SP2_50uMPDS_i712-i504 | D712dna-D504dna | SLX-15865 |
+| K562_rep1_B1_SP2_DMSO_i701-i505 | D701dna-D505dna | SLX-15865 |
+| K562_rep1_B2_SP2_DMSO_i702-i506 | D702dna-D506dna | SLX-15865 |
+| K562_rep1_B3_SP2_DMSO_i703-i507 | D703dna-D507dna | SLX-15865 |
+| K562_rep1_B_input_Input_DMSO_i710-i506 | D710dna-D506dna | SLX-15865 |
 
 
 
 ### Generate relevant folders for analysis
 
-```
-
+```bash
 mkdir fastq
 mkdir fastq2
 mkdir fastq/fastqc
@@ -36,7 +29,9 @@ mkdir analysis
 ```
 
 
+
 ### Download data from basespace and batch rename
+
 Download from basespace. As I have resequenced the same pool fq files of both runs will be named the same. Therefore I have to transfer fq files into 2 different folders fastq and fastq2 and merge by name at a later stage. Ignore unindexed reads for the moment.
 
 ```bash
