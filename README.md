@@ -5,7 +5,7 @@ This repository contains the data access and computational analyses for the meth
 
 ### Data
 
-- All in-house sequencing data have been deposited in the NCBI GEO database under accession number [XXX](). 
+- All in-house sequencing data have been deposited in the NCBI GEO database under accession number [GSE145090](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE145090). 
 
 - Additional replicates for G4 ChIP-seq in K562 cells have previously been deposited in NCBI GEO [GSE107690](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE107690).
 
