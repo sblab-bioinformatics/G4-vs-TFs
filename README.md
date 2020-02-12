@@ -41,3 +41,5 @@ This repository contains the data access and computational analyses for the meth
 | MEME-ChIP     | Accessed Jan 2019 to Dec 2019   |http://meme-suite.org/tools/meme-chip                          |
 | GAT           | 1.3.5                           |https://gat.readthedocs.io                                     |
 | Intervene     | 0.6.4                           |https://github.com/asntech/intervene                           |
+| FIMO          | 4.1.12                          |http://meme-suite.org/doc/fimo.html                            |
+
