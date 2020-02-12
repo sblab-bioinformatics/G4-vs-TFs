@@ -1,7 +1,6 @@
+# Transcription factors are directly recruited by G-quadruplex secondary structures in chromatin 
 
-# Transcription factors are routinely recruited to G-quadruplex DNA secondary structures in chromatin 
-
-This repository contains the data access and computational analyses for the methods developed in our *submitted manuscript*.
+This repository contains all relevant data access and computational analyses .
 
 ### Data
 
