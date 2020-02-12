@@ -138,7 +138,7 @@ cat K562_async_rep1-3.mult.5of8_OQS-Stranded.bed | sortBed -i | gzip > K562_asyn
 
 # G4 control data set (OQS in open Chromatin around TSS)
 
-Generate a control data set with sites that have the potential to form G4s (G-seq) in open chromatin (DHS), reflecting the strong enrichemnt of G4s around TSS. Generate two versions with and without strand information. 
+Generate a control data set with sites that have the potential to form G4s (G4-seq) in open chromatin (DHS), reflecting the strong enrichemnt of G4s around TSS. Generate two versions with and without strand information. 
 
 ```bash
 intersectBed -wa -a <(zcat G4-Seq_K_PDS_stranded.bed.gz) -b DNAse-seq.concatenated_narrow_rep1_and_rep2.bed > openOQs_stranded.bed
