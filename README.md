@@ -22,8 +22,6 @@ This repository contains the data access and computational analyses for the meth
 
 - [**Genomic association testing**](Genomic_association_testing.md)
 
-- [**SP2 native ChIP-seq and differential binding**](SP2_native_ChIP-seq_and_differential_binding.md)
-
 - [**Expression analysis**](Transcript_analysis.md)
 
 
