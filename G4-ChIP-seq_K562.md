@@ -28,39 +28,36 @@ Rep1_a,Rep1_b,Rep2_a,Rep2_b,Rep2_c,Rep3_a,Rep3_b,Rep3_c \
 
 ### G4-ChIP-seq signal distribution around TSS
 
-Folder `bigWig/` contains G4 ChIP-seq bigWig files normalized to sequencing depth generated using the *bamCoverage* function in *deeptools*. Signal profile plots around TSS were generated using functions *computeMatrix* and *plotProfile*.
+Folder `bigWig/` contains G4 ChIP-seq bigWig files from G4 ChIP-seq in K562 and HepG2 normalized to sequencing depth generated using the *bamCoverage* function in *deeptools*. Signal profile plots around TSS were generated using functions *computeMatrix* and *plotProfile*.
 
 ```bash
-cd bigWig/
-
-computeMatrix reference-point \
+sbatch -o G4.log -J DT_Profile --mem=10000 \
+--wrap "computeMatrix reference-point \
 --referencePoint center \
 -b 1000 -a 1000 \
 -S \
-G4_bio1_a.bs50.bl.RPKM.bw \
-G4_bio1_b.bs50.bl.RPKM.bw \
-G4_bio1_IP.bs50.bl.RPKM.bw \
-G4_bio2_a.bs50.bl.RPKM.bw \
-G4_bio2_b.bs50.bl.RPKM.bw \
-G4_bio2_c.bs50.bl.RPKM.bw \
-G4_bio2_IP.bs50.bl.RPKM.bw \
-G4_bio3_a.bs50.bl.RPKM.bw \
-G4_bio3_b.bs50.bl.RPKM.bw \
-G4_bio3_c.bs50.bl.RPKM.bw \
-G4_bio3_IP.bs50.bl.RPKM.bw \
+bigWig/K562_G4_bio1_a.bs50.bl.RPKM.bw \
+bigWig/K562_G4_bio2_a.bs50.bl.RPKM.bw \
+bigWig/K562_G4_bio3_a.bs50.bl.RPKM.bw \
+bigWig/K562_G4_bio1_IP.bs50.bl.RPKM.bw \
+bigWig/HepG2_G4ChIP_REP1_a.SLX-19356.i701_i502.bs50.bl.RPKM.bw \
+bigWig/HepG2_G4ChIP_REP2_a.SLX-19356.i703_i502.bs50.bl.RPKM.bw \
+bigWig/HepG2_G4ChIP_REP3_a.SLX-19356.i705_i502.bs50.bl.RPKM.bw \
+bigWig/HepG2_G4ChIP_REP1_IP.SLX-19356.i701_i517.bs50.bl.RPKM.bw \
 -R \
-ENCODE_TSS.hg19.bed \
+/scratchb/sblab/spiege01/ENCODE_K562/reference_data/hg19/ENCODE_transcripts.bed \
 --skipZeros \
--o BG4_around_TSS.mat.gz && 
-plotProfile -m BG4_around_TSS.mat.gz \
--out BG4_around_TSS.pdf \
---refPointLabel ENCODE_TSS \
---regionsLabel BG4_signal \
+-o BG4_around_TSS_HepG2-K562.mat.gz && 
+plotProfile -m BG4_around_TSS_HepG2-K562.mat.gz \
+-out BG4_around_TSS_HepG2-K562.pdf \
+--refPointLabel PeakCenter \
+--regionsLabel ENCODE_TSS \
+--samplesLabel K562_1a K562_2a KK562_3a K562_IP HepG2_1a HepG2_2a HepG2_3a HepG2_IP \
 --dpi 300 \
 --plotHeight 10 \
 --plotWidth 20 \
 --perGroup \
---numPlotsPerRow 1
+--numPlotsPerRow 1" 
 ```
 
 
