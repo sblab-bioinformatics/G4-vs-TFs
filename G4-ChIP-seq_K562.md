@@ -1,6 +1,7 @@
 # G4-ChIP-seq analysis
 
-For a more detailed description of our in-house G4-ChIP-seq pipeline please refer to our [previous work](https://github.com/sblab-bioinformatics/dna-secondary-struct-chrom-lands/blob/master/Methods.md). Briefly, G4-ChIP-seq experiments in K562 cells generated raw fastq files containing sequencing reads that were trimmed with *cutadapt* to remove adapter sequences and low-quality bases (phred quality score < 10). Trimmed reads were aligned to the human reference genome (version hg19) using *BWA* and duplicates were marked and removed using *Picard* and *samtools*, respectively. Peaks were called using *MACS2* (p < 1e-05) and merged considering different replicates using *bedtools multiinter*. Only peaks overlapping in 5 out 8 replicates were considered as high-confidence. 
+For a more detailed description of our in-house G4-ChIP-seq pipeline please refer to our [previous work](https://github.com/sblab-bioinformatics/dna-secondary-struct-chrom-lands/blob/master/Methods.md) or [HepG2 analysis](https://github.com/sblab-bioinformatics/G4-vs-TFs/blob/master/G4-ChIP-seq_HepG2.md)
+Briefly, G4-ChIP-seq experiments in K562 cells generated raw fastq files containing sequencing reads that were trimmed with *cutadapt* to remove adapter sequences and low-quality bases (phred quality score < 10). Trimmed reads were aligned to the human reference genome (version hg19) using *BWA* and duplicates were marked and removed using *Picard* and *samtools*, respectively. Peaks were called using *MACS2* (p < 1e-05) and merged considering different replicates using *bedtools multiinter*. Only peaks overlapping in 5 out 8 replicates were considered as high-confidence. 
 
 
 ### Visualize replicate overlap using Intervene
