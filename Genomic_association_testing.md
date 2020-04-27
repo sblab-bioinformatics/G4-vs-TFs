@@ -155,9 +155,151 @@ Results for different randomizations were combined and visualized [using a custo
 
 
 
+
+# HepG2
+Essentially, ENCODE data for HepG2 was analysed as described for K562. Briefly:
+
+## Selection and download of relevant ENCODE ChIP-seq bed files
+
+Genomic binding sites for chromatin-associated factors and histone marks (aligned to hg19) were downloaded from [ENCODE](https://www.encodeproject.org/) (Meta-Data was generated on 09.03.2020). All available ChIP-seq data sets from cell line HepG2 were considered.
+
+```R
+# ====== Load meta data
+ENCODE_HepG2_meta <- read.table(file = "ENCODE_HepG2_March2020_Meta.tsv", sep = '\t', header = TRUE)
+
+ENC_filt <- ENCODE_HepG2_meta[grep('bed broadPeak|bed narrowPeak', ENCODE_HepG2_meta$File.format),]
+ENC_filt <- ENC_filt[ENC_filt$File.Status!='revoked',]
+ENC_filt <- ENC_filt[ENC_filt$Assay=='ChIP-seq',]
+ENC_filt <- ENC_filt[ENC_filt$Assembly=='hg19',]
+ENC_filt <- ENC_filt[ENC_filt$Biosample.treatments=='',]
+
+# Several data sets have been 'archived' and 'released' need to remove
+
+# prefer 'released' over archived
+Released <-  ENC_filt[ENC_filt$File.Status == "released", ] 
+Remaining <- ENC_filt[!(ENC_filt$Experiment.accession %in% Released$Experiment.accession),] # keep unique experiments that only have an "archived" but not "released" dataset
+
+ENC_filt <- rbind(Released, Remaining) 
+
+# Identify all experiments for which there is an 'optimal idr' available  
+IDR_opt_yes <- ENC_filt[ENC_filt$Output.type == "optimal IDR thresholded peaks", ]
+
+# these are the ENCODE gold standard peaks. However, some experiments (in particular, histone marks) do not provide these peaks 
+
+Remaining <- ENC_filt[!(ENC_filt$Experiment.accession %in% IDR_opt_yes$Experiment.accession),] # Keep Experimental.acession that are not present in IDR_opt_yes
+
+# Keep files that result from at least 2 biological replicates and remove experiments that contain only one sample:
+Remaining <- Remaining[grep(', ', Remaining$Biological.replicate.s.),]
+
+# Keep only those processed by ENCODE consortium
+Remaining <- Remaining[Remaining$Lab =="ENCODE Processing Pipeline" ,]
+Remaining <- Remaining[rowSums(is.na(Remaining))  != ncol(Remaining), ] # remove empty rows
+
+# Keep the 'conservative-idr'
+IDR_conserv <- Remaining[Remaining$Output.type == "conservative IDR thresholded peaks", ] # extract conservative IDR
+Remaining <- Remaining[!(Remaining$Experiment.accession %in% IDR_conserv$Experiment.accession),] # keep remaining experiments
+
+# If there are multiple peaks per experiment keep 'replicated peaks' over 'peaks'
+Remaining <- Remaining[order(Remaining$Experiment.accession, Remaining$Output.type, decreasing = TRUE),  ] # order such that, files are grouped by Experiment.Accession number and 'replicated' are in the 1st position
+Remaining <- Remaining[!duplicated(Remaining$Experiment.accession),]  
+
+
+# Merge the selected Experiments
+ENC_filt <- rbind(IDR_opt_yes, IDR_conserv, Remaining)
+
+
+#---- Generate list for Download of relevant bed files
+write.table(ENC_filt[,'File.download.URL'], "20200309_LINKS_HepG2_bedfiles.NEW.txt", sep="\t", quote = FALSE, row.names = FALSE, col.names = FALSE)
+
+write.table(ENC_filt,'ENCODE_HepG2_Mar2020_BED_Meta.tsv', sep="\t", quote = FALSE, row.names = FALSE, col.names = TRUE)
+```
+
+## Download  selected bed files
+```R
+cd HepG2_Bed_Jan2019/
+xargs -n 1 curl -O -L < ENCODE_HepG2_Mar2020_BED_Meta.tsv
+```
+# GAT shuffling analysis in HepG2
+
+## Prepare HepG2 bedfiles
+
+Cut columns 1-3 to be compatible with GAT analysis:
+
+```bash
+cd HepG2/bedfiles/
+
+for FILE in *.bed.gz
+do
+bname=`basename $FILE .bed.gz`
+echo $bname
+zcat $FILE | cut -f 1-3 | bedtools sort -i |  gzip > ../Cut_bedfiles/$bname.cut.bed.gz
+done
+```
+
+
+## Generate list of bed files for GAT job scripts:
+
+```bash
+cd ../Cut_bedfiles
+
+for FILE in *.bed.gz
+do
+echo '--annotations=/scratchb/sblab/spiege01/ENCODE_more_celllines/HepG2/Cut_bedfiles/'"$FILE"' \'
+done >> HepG2_2020_annotations_list.txt
+```
+
+
+## peak numbers in each file
+
+```bash
+for FILE in *.bed.gz
+do
+Bedname=`basename $FILE .bed.gz`
+Peaks=`zcat $FILE | wc -l`
+echo -e $Bedname'\t'$Peaks >> HepG2_2020_NumberOfPeaks.txt
+done
+```
+
+## Workspaces
+As in K562, four different workspaces were considered for randomization using GAT:
+
+- white-listed genome (hg19): [hg19.wgEncodeDukeMapabilityRegionsExcludable.whitelist.bed](http://hgdownload.cse.ucsc.edu/goldenpath/hg19/encodeDCC/wgEncodeMapability/)
+
+- sites with G4 forming potential (OQS from G4-seq): [G4-Seq_cat_K_PDS_+-strands.bed](G4-ChIP-seq.md#stranded-oqs-map)
+
+- open Chromatin (ENCODE HepG2 DNase-seq): [ENCFF571RHF_DHS.bed.gz](https://www.encodeproject.org/experiments/ENCSR000EJV/)
+
+- G4-Seq OQs in open chromatin: [OQs_in_HepG2_open_chromatin.bed]()
+
+chrM was not compatible with GAT tool and needed to be removed from workspaces.
+
+```bash
+zcat ENCFF571RHF_DHS.bed.gz | cut -f 1-3 | grep -v chrM - > DHS_chrM.bed
+grep -v chrM OQs_in_HepG2_open_chromatin.bed > openOQs_chrM.bed
+```
+
+## Randomization and statistical analysis in HepG2
+
+Scripts for indiviual shuffling analysis.
+
+[GAT_HepG2_WL.sh](Scripts/GAT_HepG2_WL.sh)
+[GAT_HepG2_DHS.sh](Scripts/GAT_HepG2_DHS.sh)
+[GAT_HepG2_OQS.sh](Scripts/GAT_HepG2_OQS.sh)
+[GAT_HepG2_opOQS.sh](Scripts/GAT_HepG2_opOQS.sh)
+
+
 # G4 secondary structure vs primary sequence
 
 G4-ChIP sites are inherently G-rich. Perform association analysis for [control sites](G4-ChIP-seq.md#g4-control-data-set-oqs-in-open-chromatin-around-tss) that do not form G4 structures, but otherwise share very similar genomic features. (open chromatin, G4-forming potential, around TSS). The script used is [GAT_opOQs-noBG4_1kbupstreamTSS__DHS.sh](Scripts/GAT_opOQs-noBG4_1kbupstreamTSS__DHS.sh). Compare enrichment in endogenous G4s to control sites using [custom R script](Scripts/G4structure_vs_sequence.R)
+
+
+
+
+
+
+
+
+
 
 
 
