@@ -23,7 +23,7 @@ GAT_segments <- c('BG4_Rerun')
 
 # ====== Parameters for Filtering the data ====
 qValue_cutoff <-  0.05
-PEAK_NUMBER_Cutoff <- 500 
+PEAK_NUMBER_Cutoff <- 100 
 
 Explicit_exclusion <- c("ENCFF782GWS") # ("HNRNPF", "RBM15", "RBM17", "RBM34") Datasets have been flagged in original paper (Cell 2019 (10.1016/j.cell.2019.06.001)), but not yet on ENCODE
 
@@ -158,11 +158,11 @@ for (i in 1:length(GAT_segments))
   
   #====== FILTER  q-values 
   # Most filtering has been performed prior to downloading the bed-files. 
-  # q-Value gives an idea of the reliabiltiy of the shuffling analysis. Only keep cases where shuffling was successfull in case of open OQS as this will be the reference in the end and is consistant with K562 analysis
-  #GAT_FILTERED <- Merged_all[ Merged_all$opOQs_qvalue < qValue_cutoff , ]
+  # keep cases where shuffling was successfull in case of DHS as this will be the reference and at least 100 peaks to remove low quality ChIP-seq maps
+  GAT_FILTERED <- Merged_all[ Merged_all$DHS_qvalue < qValue_cutoff , ]
   GAT_FILTERED <- Merged_all[Merged_all$Peaks > PEAK_NUMBER_Cutoff, ]
   
-  #Remove data sets that have been explicitly flagged
+ #Remove data sets that have been explicitly flagged in publications, but not yet by ENCODE
   GAT_FILTERED <- GAT_FILTERED[!(GAT_FILTERED$File.accession  %in% Explicit_exclusion), ]
   
   
