@@ -1,5 +1,7 @@
-# Genomic association testing of G4 ChIP-seq high confidence peaks
- 
+Genomic association testing of G4 ChIP-seq high confidence peaks in K562 and HepG2.
+
+
+# K562
 ## Selection and download of relevant ENCODE ChIP-seq bed files
 
 Genomic binding sites for chromatin-associated factors and histone marks (aligned to hg19) were downloaded from [ENCODE](https://www.encodeproject.org/) (Meta-Data was generated on 10.01.2019). All available ChIP-seq data sets from cell line K562 were considered.
@@ -74,9 +76,9 @@ xargs -n 1 curl -O -L < 20190117_LINKS_K562_bedfiles.txt
 
 
 
-# GAT shuffling analysis
+## GAT shuffling analysis
 
-## Prepare K562 bedfiles
+### Prepare K562 bedfiles
 
 Cut columns 1-3 to be compatible with GAT analysis:
 
@@ -92,7 +94,7 @@ done
 ```
 
 
-## Generate list of bed files for GAT job scripts:
+### Generate list of bed files for GAT job scripts:
 
 ```bash
 cd ../K562_Cut_Bed_Jan2019
@@ -104,7 +106,7 @@ done >> K562_Rerun_Jan2019_annotations_list.txt
 ```
 
 
-## peak numbers in each file
+### peak numbers in each file
 
 ```bash
 for FILE in *.bed.gz
@@ -116,7 +118,7 @@ done
 ```
 
 
-## Workspaces
+### Workspaces
 
 Several different workspaces were considered for randomization using GAT.
 
@@ -138,7 +140,7 @@ grep -v chrM OQs_in_K562_open_chromatin.bed > openOQs_chrM.bed
 ```
 
 
-## Randomization and statistical analysis
+### Randomization and statistical analysis
 
 Scripts for indiviual shuffling analysis.
 
@@ -150,7 +152,7 @@ Scripts for indiviual shuffling analysis.
 
 ## Visualization
 
-Results for different randomizations were combined and visualized [using a custom R script](Scripts/GAT-analysis.R).
+Results for different randomizations were combined and visualized [using a custom R script](Scripts/K562_GAT-analysis.R).
 
 
 
@@ -219,9 +221,9 @@ write.table(ENC_filt,'ENCODE_HepG2_Mar2020_BED_Meta.tsv', sep="\t", quote = FALS
 cd HepG2_Bed_Jan2019/
 xargs -n 1 curl -O -L < ENCODE_HepG2_Mar2020_BED_Meta.tsv
 ```
-# GAT shuffling analysis in HepG2
+## GAT shuffling analysis in HepG2
 
-## Prepare HepG2 bedfiles
+### Prepare HepG2 bedfiles
 
 Cut columns 1-3 to be compatible with GAT analysis:
 
@@ -237,7 +239,7 @@ done
 ```
 
 
-## Generate list of bed files for GAT job scripts:
+### Generate list of bed files for GAT job scripts:
 
 ```bash
 cd ../Cut_bedfiles
@@ -249,7 +251,7 @@ done >> HepG2_2020_annotations_list.txt
 ```
 
 
-## peak numbers in each file
+### peak numbers in each file
 
 ```bash
 for FILE in *.bed.gz
@@ -288,16 +290,20 @@ Scripts for indiviual shuffling analysis.
 [GAT_HepG2_opOQS.sh](Scripts/GAT_HepG2_opOQS.sh)
 
 
+## Visualization
+Results for different randomizations were combined and visualized [using a custom R script](Scripts/HepG2_GAT-analysis.R).
+
+
+# Comparison of enrichment in K562 and HepG2
+To assess whether binding  at endogenous G4s is a generall feature of TFs, the enrichment in K562 and HepG2 were compared [using a custom R script](Scripts/GAT_K562_vs_HepG2.R).
+
+
+
+
+
 # G4 secondary structure vs primary sequence
 
 G4-ChIP sites are inherently G-rich. Perform association analysis for [control sites](G4-ChIP-seq.md#g4-control-data-set-oqs-in-open-chromatin-around-tss) that do not form G4 structures, but otherwise share very similar genomic features. (open chromatin, G4-forming potential, around TSS). The script used is [GAT_opOQs-noBG4_1kbupstreamTSS__DHS.sh](Scripts/GAT_opOQs-noBG4_1kbupstreamTSS__DHS.sh). Compare enrichment in endogenous G4s to control sites using [custom R script](Scripts/G4structure_vs_sequence.R)
-
-
-
-
-
-
-
 
 
 
