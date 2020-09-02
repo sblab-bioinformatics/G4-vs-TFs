@@ -1,4 +1,4 @@
-# Transcription factors are directly recruited by G-quadruplex secondary structures in chromatin 
+# G-quadruplexes are transcription factor binding hubs in human chromatin
 
 This repository contains all relevant data access and computational analyses .
 
